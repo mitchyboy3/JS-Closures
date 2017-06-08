@@ -15,11 +15,12 @@ closure over the name variable. Invoke outer saving the return value into
 another variable called 'inner'. */
 
 // Code Here
+var inner = outer();
 
 //Once you do that, invoke inner.
 
 //Code Here
-
+inner()
 
 
 
@@ -48,6 +49,10 @@ in your console. */
 
   //Code Here
 
+var callJake = callFriend('Jake');
+
+callJake('435-555-9248');
+
 
 
 
@@ -65,14 +70,21 @@ in your console. */
 properly. */
 
 //Code Here
-
+function makeCounter(){
+  var total = 0;
+  function x(){
+    return ++total;
+  } return x;
+}
 //Uncomment this once you make your function
-//   var count = makeCounter();
-//   count(); // 1
-//   count(); // 2
-//   count(); // 3
-//   count(); // 4
+  var count = makeCounter();
+  count(); // 1
+  count(); // 2
+  count(); // 3
+  count(); // 4
 
+  
+  
 
 
 
@@ -97,20 +109,23 @@ http://stackoverflow.com/questions/17776940/javascript-module-pattern-with-examp
 */
 
 function counterFactory(value) {
-
-  // Code here.
-
-
+  var total = value;
   return {
+    inc:function(){
+      return ++total;
+    },
+    dec:function(){
+      return --total;
+    }
   }
 }
 
 
-counter = counterFactory(10);
-// counter.inc() // 11
-// counter.inc() // 12
-// counter.inc() // 13
-// counter.dec() // 12
+var counter = counterFactory(10);
+counter.inc() // 11
+counter.inc() // 12
+counter.inc() // 13
+counter.dec() // 12
 
 
 
@@ -134,14 +149,17 @@ function motivation(firstname, lastname) {
   var welcomeText = 'You\'re doing awesome, keep it up ';
 
   // code message function here.
-
+  function message(){
+    return welcomeText + firstname + ' ' + lastname +'.';
+  }
 
   //Uncommment this to return the value of your invoked message function
-  //return message();
+  return message();
+
 
 }
 
-motivation('Billy', 'Bob'); // 'You're doing awesome keep it up Billy Bob.
+console.log(motivation('Billy', 'Bob')); // 'You're doing awesome keep it up Billy Bob.
 
 
 
@@ -176,6 +194,9 @@ var module = (function() {
   // outside our lexical scope
   return {
     // Code here.
+    publicMethod:function(){
+      return privateMethod();
+    }
   };
 
 })();
@@ -190,18 +211,27 @@ var module = (function() {
 friends (friends of friends), and an array of all users. These arrays may share
 users. Write a function that takes in our existing friends and returns
 a function that will tell us if a given user is not already a friend. */
-var friends = ["Tom", "Dick", "Harry"];
+var friends = ["Tom", "Dick", "Harry",];
 var secondLevelFriends = ["Anne", "Harry", "Quinton"];
 var allUsers = ["Tom", "Dick", "Harry", "Anne", "Quinton", "Katie", "Mary"];
 
 function findPotentialFriends(existingFriends) {
+  return function(friend){
+    return !existingFriends.includes(friend);
+  }
 
-}
+};
 
 var isNotAFriend = findPotentialFriends( friends );
-// isNotAFriend(allUsers[0]); // false
-// isNotAFriend(secondLevelFriends[2]); // true
-
+isNotAFriend;
+console.log(isNotAFriend(allUsers[0])); // false
+console.log(isNotAFriend(secondLevelFriends[2])); // true
+console.log(isNotAFriend(allUsers[1])) // false
+console.log(isNotAFriend(allUsers[2])) // false
+console.log(isNotAFriend(allUsers[3])) // true
+console.log(isNotAFriend(allUsers[4])) // true
+console.log(isNotAFriend(allUsers[5])) // true
+console.log(isNotAFriend(allUsers[6])) // true
 
 /******************************************************************************\
  #PROBLEM-07 -- BLACK DIAMOND
@@ -210,8 +240,12 @@ var isNotAFriend = findPotentialFriends( friends );
 method, find all potential second level friends as well as potential friends
 from allUsers. */
 
-var potentialSecondLevelFriends = "?";
-var allPotentialFriends = "?";
+var potentialSecondLevelFriends = secondLevelFriends.filter(findPotentialFriends(friends));
+  potentialSecondLevelFriends
+
+var allPotentialFriends = allUsers.filter(findPotentialFriends(friends));
+allPotentialFriends;
+
 
 
 /******************************************************************************\
@@ -236,9 +270,13 @@ to 5. What we need to do is console.log(i) so that it logs like so:
 
 function timeOutCounter() {
   for (var i = 0; i <= 5; i++) {
+    function closure(innerI){
+      
     setTimeout(function() {
-    	console.log(i)
+    	console.log(innerI)
 	}, i * 1000)
+  }
+  closure(i)
   }
 }
 timeOutCounter();
