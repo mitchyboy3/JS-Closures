@@ -241,7 +241,7 @@ method, find all potential second level friends as well as potential friends
 from allUsers. */
 
 var potentialSecondLevelFriends = secondLevelFriends.filter(findPotentialFriends(friends));
-  potentialSecondLevelFriends
+
 
 var allPotentialFriends = allUsers.filter(findPotentialFriends(friends));
 allPotentialFriends;
